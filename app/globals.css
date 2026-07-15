@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ivory: #f4ede0;
+  --char: #141210;
+  --salsa: #c1281e;
+  --cilantro: #3e6b36;
+  --lime: #b7d34a;
+  --steel: #9aa1a6;
+  --crema: #fbf7ef;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--crema);
+  color: var(--char);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Lenis recommended styles */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@layer base {
+  ::selection {
+    background: var(--salsa);
+    color: var(--crema);
+  }
+
+  /* One consistent, intentional focus ring across the whole site. */
+  :focus-visible {
+    outline: 2px solid var(--salsa);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  /* On dark surfaces the lime ring reads better. */
+  .on-dark :focus-visible {
+    outline-color: var(--lime);
+  }
+}
+
+@layer components {
+  .display {
+    font-family: var(--font-display), system-ui, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.92;
+  }
+
+  /* Big editorial headline that scales fluidly */
+  .headline-xl {
+    font-size: clamp(2.75rem, 11vw, 10rem);
+  }
+  .headline-lg {
+    font-size: clamp(2.25rem, 7vw, 6rem);
+  }
+
+  /* Kicker / eyebrow label */
+  .kicker {
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  /* The "order ticket" index tag: mono, small, restaurant-receipt feel. */
+  .ticket {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .ticket-num {
+    font-family: var(--font-mono), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-semibold transition-[background-color,color,border-color,transform] duration-300 ease-out active:scale-[0.97];
+  }
+  .btn-primary {
+    @apply btn bg-salsa text-crema hover:bg-char;
+  }
+  .btn-dark {
+    @apply btn bg-char text-crema hover:bg-salsa;
+  }
+  .btn-outline {
+    @apply btn border border-char/25 text-char hover:border-char hover:bg-char hover:text-crema;
+  }
+  /* Arrow that travels on hover/focus. Wrap the icon in .btn-arrow. */
+  .btn .btn-arrow {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn:hover .btn-arrow,
+  .btn:focus-visible .btn-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  /* Text link with an underline that draws in from the left. */
+  .link-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1.5px;
+    transition: background-size 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    padding-bottom: 1px;
+  }
+  .link-draw:hover,
+  .link-draw:focus-visible {
+    background-size: 100% 1.5px;
+  }
+
+  .noise-overlay::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+  }
+}
+
+/* Reveal-mask utility used by image reveals when JS/GSAP unavailable */
+.mask-reveal {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Hide scrollbars on horizontal carousels / chip rows */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Subtle paper grain over the whole page. Fixed so it does not scroll,
+   very low opacity so it never hurts readability. */
+.grain-bg::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+/* "Served" reveal: a directional wipe used for section headers and images.
+   JS (GSAP) drives the main reveals; this is the reduced-motion-safe default
+   state and a utility for simple cases. */
+.reveal-wipe {
+  clip-path: inset(0 100% 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain-bg::after {
+    display: none;
+  }
+  .reveal-wipe {
+    clip-path: none;
+  }
+}
+
+/* Deterministic CSS fade-up (used where GSAP timing is not needed) */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  opacity: 0;
+  animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-up {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
