@@ -14,7 +14,12 @@ export function Visit() {
   return (
     <section id="visit" className="bg-ivory py-20 md:py-28">
       <div className="mx-auto w-full max-w-[1400px] px-5 md:px-10">
-        <SectionTag index="06" label="Come by" className="text-salsa" />
+        <SectionTag
+          index="06"
+          mobileIndex="04"
+          label="Come by"
+          className="text-salsa"
+        />
         <h2 className="display headline-lg mt-4 text-char">Visit the shop.</h2>
 
         <div className="mt-10 grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14">

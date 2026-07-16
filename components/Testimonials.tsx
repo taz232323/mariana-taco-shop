@@ -37,7 +37,12 @@ export function Testimonials() {
       <div className="mx-auto w-full max-w-[1400px] px-5 md:px-10">
         <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
           <div>
-            <SectionTag index="05" label="Word around Frisco" className="text-lime" />
+            <SectionTag
+              index="05"
+              mobileIndex="03"
+              label="Word around Frisco"
+              className="text-lime"
+            />
             <h2 className="display headline-lg mt-4 text-crema">
               What people say.
             </h2>

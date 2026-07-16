@@ -68,6 +68,7 @@ export function FinalCTA() {
       <div className="relative z-10 mx-auto w-full max-w-[1400px] px-5 py-24 md:px-10">
         <SectionTag
           index="07"
+          mobileIndex="05"
           label="Last stop"
           className="final-rise text-lime"
         />

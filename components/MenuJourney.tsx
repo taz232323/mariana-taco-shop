@@ -119,13 +119,32 @@ export function MenuJourney() {
   const chooseCategory = (id: string) => {
     setActiveCategoryId(id);
     window.history.replaceState(null, "", `#menu-category-${id}`);
+
+    const fullMenu = document.getElementById("full-menu");
+    if (!fullMenu) return;
+
+    window.requestAnimationFrame(() => {
+      const reducedMotion = window.matchMedia(
+        "(prefers-reduced-motion: reduce)"
+      ).matches;
+
+      fullMenu.scrollIntoView({
+        behavior: reducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
+    });
   };
 
   return (
     <section id="menu" ref={scope} className="bg-ivory py-14 md:py-28">
       <div className="mx-auto w-full max-w-[1400px] px-5 md:px-10">
         <div className="menu-head">
-          <SectionTag index="04" label="The menu" className="text-salsa" />
+          <SectionTag
+            index="04"
+            mobileIndex="01"
+            label="The menu"
+            className="text-salsa"
+          />
           <div className="mt-5 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <h2 className="display headline-lg max-w-2xl text-char">
               Fan favorites.
