@@ -12,6 +12,15 @@ import { SectionTag } from "@/components/SectionTag";
 import { useAnimationsEnabled } from "@/hooks/useAnimationsEnabled";
 
 type Dish = (typeof DISHES)[number];
+type LenisScroll = {
+  scrollTo: (
+    target: number | string | HTMLElement,
+    options?: { duration?: number; immediate?: boolean; offset?: number }
+  ) => void;
+};
+type WindowWithLenis = Window & {
+  __marianaLenis?: LenisScroll;
+};
 
 function formatMenuPrice(price: number, hasUpgrades: boolean) {
   if (hasUpgrades && price === 0) return "Varies";
@@ -127,10 +136,22 @@ export function MenuJourney() {
       const reducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
+      const headerOffset = window.matchMedia("(min-width: 768px)").matches
+        ? 96
+        : 72;
+      const targetTop =
+        fullMenu.getBoundingClientRect().top + window.scrollY - headerOffset;
+      const target = Math.max(targetTop, 0);
+      const lenis = (window as WindowWithLenis).__marianaLenis;
 
-      fullMenu.scrollIntoView({
+      if (lenis && !reducedMotion) {
+        lenis.scrollTo(target, { duration: 0.85 });
+        return;
+      }
+
+      window.scrollTo({
+        top: target,
         behavior: reducedMotion ? "auto" : "smooth",
-        block: "start",
       });
     });
   };

@@ -5,6 +5,10 @@ import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+type WindowWithLenis = Window & {
+  __marianaLenis?: Pick<Lenis, "scrollTo">;
+};
+
 /**
  * Boots Lenis smooth scrolling and wires it into the GSAP ticker so that
  * ScrollTrigger stays perfectly in sync with the smoothed scroll position.
@@ -23,6 +27,8 @@ export function useLenis(enabled: boolean) {
       touchMultiplier: 1.5,
     });
 
+    (window as WindowWithLenis).__marianaLenis = lenis;
+
     // Keep ScrollTrigger updated on every Lenis frame.
     lenis.on("scroll", ScrollTrigger.update);
 
@@ -36,6 +42,9 @@ export function useLenis(enabled: boolean) {
     return () => {
       gsap.ticker.remove(raf);
       lenis.destroy();
+      if ((window as WindowWithLenis).__marianaLenis === lenis) {
+        delete (window as WindowWithLenis).__marianaLenis;
+      }
     };
   }, [enabled]);
 }
