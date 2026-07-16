@@ -3,7 +3,6 @@
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
-import { QuickActions } from "@/components/QuickActions";
 import { CravingSelector } from "@/components/CravingSelector";
 import { BuildTheBite } from "@/components/BuildTheBite";
 import { StoryPanels } from "@/components/StoryPanels";
@@ -29,9 +28,6 @@ export default function Home() {
       <main className="flex flex-col md:block">
         <div className="order-1">
           <Hero />
-        </div>
-        <div className="order-2 md:hidden">
-          <QuickActions />
         </div>
         <div className="order-[90] hidden md:block">
           <CravingSelector />
